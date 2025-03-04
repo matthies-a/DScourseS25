@@ -1,0 +1,34 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+ 
+\begin{document}
+ 
+\title{PS5}
+\author{Adam Matthies\\}
+
+\maketitle
+3) It is statistics on how all of the top 900 rated baseball prospects performed last season, at their respective levels (Single-A, Double-A, Triple-A, etc.). There are some great stats in the table, but it would probably be better to use a table of older players for more useful prediction. I would probably like to use different independent variables than what are in this table like bat speed, exit velocities, or xwOBA, but I was constrained by how the graphs would read on R from the 'Baseball Savant' website. However, there is a package called "baseballr" which allows you to pull data from many different sites--I will just need to become more acquainted with how to use the package. I also found someone on GitHub by the name 'robert-frey' who has many good repositories on getting baseball data into R. 
+
+4) It is all the monthly tracking of the M2 money supply coming from FRED. It all was a smooth process using the Fred API, but I will need to collect and combine multiple different variables if I were to choose something in monetary policymaking as my research project. The data seems pretty predictable in the first place, so I am not sure I will end up doing anything with it. I used the httr package.
+ 
+\end{document}
