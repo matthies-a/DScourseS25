@@ -1,0 +1,115 @@
+
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\newenvironment{statement}[2][Statement]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%
+%                         Start here
+%
+% --------------------------------------------------------------
+ 
+\title{Problem Set 7} % replace with the problem you are writing up
+\author{Adam Matthies} % replace with your name
+\maketitle
+
+
+\begin{statement}
+
+560 logwages were missing. I think the logwage variable is MCAR. The listwise deletion of Beta one
+varies quite differenly from the other three models. The predicitive model is the same to the mean
+imputation but it is very dependent on the inputted values of x--which I used the mean values of
+each column for the values of x. The mean imputation I would think would be the most accurate
+because it is a large dataset so the values will tend toward the expected value. I got a Beta one
+of .059 from mice. I am still confused on the theoretical part of multiple imputations, so I can't
+expand any further on that. I was not able to include the multiple imputations as apart of the
+combined modelsummary because I was having issues with my R code, but the modelsummary for just
+the mice can be seen after running my R code.
+
+\end{statement}
+
+\begin{statement}
+
+I am still working on finding the best data to do what I would like. I would like to create
+some predictive model or gradient-based optimization model on some sort of financial/economic
+data. Objective functions that intrigue me to optimize would be risk, solvency, profit, or something of the like.
+\end{statement}
+ 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllllll}
+  \hline
+ &    logwage &      hgc &   college &     tenure &      age &   married \\ 
+  \hline
+X & Min.   :0.0049   & Min.   : 0.0   & Length:2229        & Min.   : 0.000   & Min.   :34.00   & Length:2229        \\ 
+  X.1 & 1st Qu.:1.3623   & 1st Qu.:12.0   & Class :character   & 1st Qu.: 1.583   & 1st Qu.:36.00   & Class :character   \\ 
+  X.2 & Median :1.6551   & Median :12.0   & Mode  :character   & Median : 3.750   & Median :39.00   & Mode  :character   \\ 
+  X.3 & Mean   :1.6252   & Mean   :13.1   &  & Mean   : 5.971   & Mean   :39.15   &  \\ 
+  X.4 & 3rd Qu.:1.9362   & 3rd Qu.:15.0   &  & 3rd Qu.: 9.333   & 3rd Qu.:42.00   &  \\ 
+  X.5 & Max.   :2.2615   & Max.   :18.0   &  & Max.   :25.917   & Max.   :46.00   &  \\ 
+  X.6 & NA's   :560   &  &  &  &  &  \\ 
+   \hline
+\end{tabular}
+\end{table}
+ 
+
+\begin{document}
+
+% Content on the current page
+
+
+\newpage % This command starts a new page
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+ & MCARlm & MeanImputelm & PredictedValuelm \\
+\midrule
+(Intercept) & 0.627 & 0.808 & 0.826 \\
+ & (0.109) & (0.087) & (0.088) \\
+hgc & 0.062 & 0.049 & 0.046 \\
+ & (0.005) & (0.004) & (0.004) \\
+collegenot college grad & 0.146 & 0.160 & 0.168 \\
+ & (0.035) & (0.026) & (0.026) \\
+tenure & 0.023 & 0.015 & 0.014 \\
+ & (0.002) & (0.001) & (0.001) \\
+$I(age^{2})$ & 0.000 & 0.000 & 0.000 \\
+ & (0.000) & (0.000) & (0.000) \\
+marriedsingle & -0.024 & -0.029 & -0.032 \\
+ & (0.018) & (0.014) & (0.014) \\
+\midrule
+Num.Obs. & 1,669 & 2,229 & 2,229 \\
+R$^{2}$ & 0.195 & 0.132 & 0.112 \\
+R$^{2}$ Adj. & 0.192 & 0.130 & 0.110 \\
+AIC & 1,206.1 & 1,129.3 & 1,195.5 \\
+BIC & 1,244.0 & 1,169.2 & 1,235.4 \\
+Log.Lik. & -596.041 & -557.636 & -590.727 \\
+F & 80.512 & 67.504 & 55.926 \\
+RMSE & 0.35 & 0.31 & 0.32 \\
+\bottomrule
+\end{tabular}
+\caption{Comparative Model Summaries}
+\label{tab:model_comparison}
+\end{table}
+
+
+\end{document}
+
+
+
+
+
+
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}
