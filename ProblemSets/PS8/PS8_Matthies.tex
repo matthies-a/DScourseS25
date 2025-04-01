@@ -1,0 +1,57 @@
+
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\newenvironment{statement}[2][Statement]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%
+%                         Start here
+%
+% --------------------------------------------------------------
+ 
+\title{Problem Set 7} % replace with the problem you are writing up
+\author{Adam Matthies} % replace with your name
+\maketitle
+
+
+\begin{statement}
+
+The estimator for the Nelder-Mead won't compute because I have an error saying "(Y-(X*Beta)) are
+not conformable arrays". The matrix X is a 10,000x10 and matrix Beta is 10x1 which the multiplication
+of those two would output a 10,000x1 matrix. Matrix Y is a 10,000x1 vector and subtracting the new
+vector with the same dimensions should work. But for some reason that I do not know, it tells me
+that part is not a conformable array. Estimating the OLS objective function using L-BFGS and the
+linear model, I was able to get just about the same values of the true betas. For gradient descent,
+the values are converging to 3, but this arbitrarily does not seem correct to me. I am mainly skeptical I have not defined "function(x)" correctly in the gradient. The MLE estimation also came
+out very close to the true values, I did however get an 11th estimate for some reason.
+
+\end{statement}
+ 
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+X1 & 1.5028 & 0.0016 & 943.58 & 0.0000 \\ 
+  X2 & -1.0005 & 0.0016 & -627.64 & 0.0000 \\ 
+  X3 & -0.2481 & 0.0016 & -154.76 & 0.0000 \\ 
+  X4 & 0.7498 & 0.0016 & 469.90 & 0.0000 \\ 
+  X5 & 3.4989 & 0.0016 & 2197.70 & 0.0000 \\ 
+  X6 & -1.9975 & 0.0016 & -1251.42 & 0.0000 \\ 
+  X7 & 0.5010 & 0.0016 & 314.66 & 0.0000 \\ 
+  X8 & 0.9980 & 0.0016 & 627.81 & 0.0000 \\ 
+  X9 & 1.2493 & 0.0016 & 783.94 & 0.0000 \\ 
+  X10 & 1.9986 & 0.0016 & 1256.32 & 0.0000 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{document}
