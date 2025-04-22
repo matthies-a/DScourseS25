@@ -1,0 +1,165 @@
+\documentclass[12pt,english]{article}
+\usepackage{mathptmx}
+
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{darkblue}{RGB}{0.,0.,139.}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lipsum}
+
+\usepackage[authoryear]{natbib}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[flushleft]{threeparttable}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{pdflscape}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},backref=false,
+ colorlinks,citecolor=black,filecolor=black,
+ linkcolor=black,urlcolor=black]
+ {hyperref}
+\usepackage[all]{hypcap} % Links point to top of image, builds on hyperref
+\usepackage{breakurl}    % Allows urls to wrap, including hyperref
+
+\linespread{2}
+
+\begin{document}
+
+\begin{singlespace}
+\title{Forward Guidance and its Effects on Consumer Spending}
+\end{singlespace}
+
+\author{Adam Matthies\thanks{Department of Economics, University of Oklahoma.\
+E-mail~address:~\href{mailto:student.name@ou.edu}{adam.matthies@ou.edu}}}
+
+% \date{\today}
+\date{Spring 2025}
+
+\maketitle
+
+\begin{abstract}
+\begin{singlespace}
+I have no good quantitative evidence at the moment, but a positive relationship or even a negative
+relationship on consumer spending is likely to be found after running linear regressions on Fed
+policy decisions. Main challenge at the moment is getting data stationary to find estimated
+causal effects.
+\end{singlespace}
+
+\end{abstract}
+\vfill{}
+
+
+\pagebreak{}
+
+
+\section{Introduction}\label{sec:intro}
+The Fed loves to be very vague on policy actions, so I am just looking for estimated cause and
+effects of their policy actions or their believed policy actions. 
+
+\section{Literature Review}\label{sec:litreview}
+Something that stoked my interest on this topic was the power change from Alan Greenspan to 
+Ben Bernanke. In a book from Ben Bernanke called "The Courage to Act", he talks about how he wanted
+to prioritize a forward guidance and be more informative to the general public on expected inflation
+numbers. So now, I am doing further research on the effects of setting these expectations that the
+Fed likes to deem "Forward Guidance".
+
+
+
+\section{Data}\label{sec:data}
+My data all currently comes from FRED, but I still want to add and test variables with a LASSO
+regression. I also need to add a categorical variable to my dataset of whether there was no
+rate change, increased rates, or decreased rates for that month of data. My data is time series.
+
+
+
+\section{Empirical Methods}\label{sec:methods}
+While my approach explores a number of different approaches, the primary empirical model can be depicted in the following equation:
+
+\begin{equation}
+\label{eq:1}
+\item
+    \[
+    \begin{aligned}
+    \hat{ConsumerSpending} = &\ \hat{\beta}_0 + \hat{\beta}_1 \text{1-yr. Exp Inflation} + \hat{\beta}_2 \text{LFPR} + \\
+    &\ \hat{\beta}_3 \text{Population} + \hat{\beta}_4 \text{Monetary Base} + \\
+    &\ \hat{\beta}_5 \text{Personal Savings Rate} + \epsilon
+    \end{aligned}
+    \]
+\end{equation}
+
+
+
+\section{Research Findings}\label{sec:results}
+Still need to go through these steps to get accurate research findings:
+
+\begin{itemize}
+    \item Add categorical variable for policy actioins
+    \item Get stationary data, multicollinearity is not currently an issue
+    \item Tool around with some other variables and LASSO
+\end{itemize}
+
+\section{Conclusion}\label{sec:conclusion}
+No conclusion at the moment, but it can be assumed from theory that Forward Guidance will have
+statistical significance on consumer spending.
+
+\vfill
+\pagebreak{}
+\begin{spacing}{1.0}
+\bibliographystyle{jpe}
+\bibliography{PS11_Matthies.bib}
+\addcontentsline{toc}{section}{References}
+\end{spacing}
+
+\vfill
+\pagebreak{}
+\clearpage
+
+%========================================
+% FIGURES AND TABLES 
+%========================================
+\section*{Figures and Tables}\label{sec:figTables}
+\addcontentsline{toc}{section}{Figures and Tables}
+%----------------------------------------
+% Figure 1
+%----------------------------------------
+\begin{figure}[ht]
+\centering
+\bigskip{}
+\includegraphics[width=.9\linewidth]{fig1.eps}
+\caption{Figure caption goes here}
+\label{fig:fig1}
+\end{figure}
+
+%----------------------------------------
+% Table 1
+%----------------------------------------
+
+\caption{Summary Statistics of Variables of Interest}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & -134.5969 & 153.9046 & -0.87 & 0.3837 \\ 
+  MonetaryBase & 0.0054 & 0.0015 & 3.59 & 0.0005 \\ 
+  OneYearExpInfl & 3.1303 & 1.4459 & 2.17 & 0.0325 \\ 
+  LFPR & 8.0501 & 2.7742 & 2.90 & 0.0045 \\ 
+  Population & -0.0009 & 0.0002 & -4.54 & 0.0000 \\ 
+  SavingsRate & 0.8082 & 0.3108 & 2.60 & 0.0106 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+\end{document}
