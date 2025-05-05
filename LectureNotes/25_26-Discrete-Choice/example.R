@@ -1,9 +1,9 @@
-
 library(tidyverse)
 library(magrittr)
 library(mlogit)
 data(Heating) # load data on residential heating choice in CA
 levels(Heating$depvar) <- c("gas","gas","elec","elec","elec")
+Heating$income <- as.factor(Heating$income)
 estim <- glm(depvar ~ income+agehed+rooms+region,
              family=binomial(link='logit'),data=Heating)
 print(summary(estim))
@@ -19,7 +19,9 @@ Heating %<>% mutate(predProbit = predict(estim2, newdata = Heating, type = "resp
 Heating %>% `$`(predProbit) %>% summary %>% print
 
 # counterfactual policy
-estim$coefficients["income"] <- 4*estim$coefficients["income"]
+estim$coefficients["income7"] <- 4*estim$coefficients["income7"]
+estim$coefficients["income6"] <- 4*estim$coefficients["income6"]
+estim$coefficients["income5"] <- 4*estim$coefficients["income5"]
 Heating %<>% mutate(predLogitCfl = predict(estim, newdata = Heating, type = "response"))
 Heating %>% `$`(predLogitCfl) %>% summary %>% print
 
