@@ -1,0 +1,253 @@
+library(lubridate)
+library(fredr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(urca)
+library(tseries)
+library(car)
+library(tidyverse)
+library(rvest)
+library(glmnet)
+library(forecast)
+library(MASS)
+
+
+# Set FRED API key from .Renviron
+fredr_set_key(Sys.getenv("FRED_API_KEY"))
+
+# Calculate date from 10 years ago
+specific_date <- as.Date("2025-04-01")
+start_date <- specific_date - years(10)
+
+# Define the series IDs
+series_ids <- c("VISASMIHNSA","BOGMBASE","EXPINF1YR","CIVPART","POPTHM","PSAVERT")
+
+# Function to get data for each series
+get_fred_data <- function(series_id) {
+  # Retrieve data from FRED for the last 10 years
+  data <- fredr(
+    series_id = series_id,
+    observation_start = start_date,
+    observation_end = specific_date
+  )
+  
+  # Select and rename columns
+  data <- data %>%
+    dplyr::select(date, value) %>%      ###Calling dplyr select###
+    rename(!!series_id := value)
+  
+  return(data)
+}
+
+# Get data for each series
+data_list <- lapply(series_ids, get_fred_data)
+
+# Merge the data frames by date
+df <- Reduce(function(x, y) merge(x, y, by = "date", all = TRUE), data_list)
+
+# Sort by date
+df <- df %>% arrange(date)
+
+# Handle any missing values if needed
+df <- df %>% na.omit() # Or use another method to handle NAs
+
+# rename columns
+colnames(df)[2:7]=c("ConsumerSpending","MonetaryBase","OneYearExpInfl",
+                    "LFPR","Population","SavingsRate")
+# log of monetary base
+df$log.MonetaryBase <- log(df$MonetaryBase)
+
+# add binary variable for if there was a FOMC meeting that month, could not find
+# consolidated data of this information anywhere online, so I had to do it
+# manually *VERY BAD CODING PRACTICES*
+df$FOMC_Meeting <- c(1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1,
+                     1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,1,0,1,1
+                     ,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,
+                     1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1)
+
+
+# linear regression to test VIF
+lm_model <- lm(ConsumerSpending ~ log.MonetaryBase + OneYearExpInfl + LFPR  + SavingsRate
+               + FOMC_Meeting + Population, data = df)
+summary(lm_model)
+#  VIF
+vif_values <- vif(lm_model)
+
+# Print VIF values
+print(vif_values) # no strong multicollinearity btwn variables
+
+
+
+###### Differencing and lagging variables to create stationary data ######
+
+dflag <- df %>%
+  mutate(
+    # Differenced dependent variable
+    ConsumerSpending_difflag1 = c(NA,diff(lag(ConsumerSpending,1))),
+    # Differenced independent variables, but FOMC is lagged b/c that gets rid of unit root
+    log.MonetaryBase_diff = c(NA, diff(log.MonetaryBase)),
+    OneYearExpInfl_diff = c(NA, diff(OneYearExpInfl)),
+    LFPR_diff = c(NA, diff(LFPR)),
+    SavingsRate_diff = c(NA, diff(SavingsRate)),
+    FOMC_Meeting = FOMC_Meeting,
+    Population_diff2 = c(NA, NA, diff(diff(Population)))
+  )
+
+df_lag <- dflag %>% na.omit()
+
+
+########## ADF Test on each new variable ###########
+
+# Create a function to run ADF test and handle potential errors
+run_adf_test <- function(x) {
+  # Remove NA values
+  x <- na.omit(x)
+  
+  # Skip if there are too few observations
+  if(length(x) < 3) {
+    return(list(statistic = NA, p.value = NA, error = "Too few observations"))
+  }
+  
+  # Try to run ADF test, handle errors
+  tryCatch({
+    test <- adf.test(x)
+    return(list(statistic = test$statistic, p.value = test$p.value, error = NA))
+  }, error = function(e) {
+    return(list(statistic = NA, p.value = NA, error = as.character(e)))
+  })
+}
+
+# Define which columns to test (all the lagged variables and the differenced variable)
+columns_to_test <- c(
+  "ConsumerSpending_difflag1", 
+  "log.MonetaryBase_diff", 
+  "OneYearExpInfl_diff", 
+  "LFPR_diff", 
+  "SavingsRate_diff", "FOMC_Meeting",
+  "Population_diff2"
+)
+
+# Create an empty data frame to store the results
+adf_results <- data.frame(
+  variable = character(),
+  adf_statistic = numeric(),
+  p_value = numeric(),
+  is_stationary = logical(),
+  error = character(),
+  stringsAsFactors = FALSE
+)
+
+# Run ADF test on each column
+for(col in columns_to_test) {
+  if(col %in% colnames(df_lag)) {
+    result <- run_adf_test(df_lag[[col]])
+    
+    # Add results to the data frame
+    adf_results <- rbind(adf_results, data.frame(
+      variable = col,
+      adf_statistic = result$statistic,
+      p_value = result$p.value,
+      is_stationary = ifelse(is.na(result$p.value), NA, result$p.value < 0.05),
+      error = result$error,
+      stringsAsFactors = FALSE
+    ))
+  } else {
+    # Column doesn't exist
+    adf_results <- rbind(adf_results, data.frame(
+      variable = col,
+      adf_statistic = NA,
+      p_value = NA,
+      is_stationary = NA,
+      error = "Column not found in data frame",
+      stringsAsFactors = FALSE
+    ))
+  }
+}
+na.omit()
+# Print the results in a readable format
+print(adf_results, row.names = FALSE)  #all values no longer have unit root, as P < .05
+
+########## End of ADF Test on each new variable ########### 
+
+
+
+###### LASSO REGRESSION #######
+
+# omitting non-lagged variables for LASSO
+set.seed(123)
+df_lasso <- df_lag %>% na.omit()
+
+lasso_df <- (df_lasso %>% 
+               dplyr::select(-ConsumerSpending, -MonetaryBase, -OneYearExpInfl,
+                             -Population, -LFPR, -SavingsRate, -date, -log.MonetaryBase,
+                             ))
+
+X <- model.matrix(ConsumerSpending_difflag1 ~ ., lasso_df)
+
+# Outcome variable
+y <- lasso_df$ConsumerSpending_diff
+
+
+fit.lasso <- glmnet(X, y, alpha = 1, standardize = T)
+plot(fit.lasso, label = T)
+plot(fit.lasso, xvar = "lambda", label = T)
+
+
+# Selecting the Optimal Penalty Parameter
+# Using cross-validation to select an optimal lambda value
+fit.lasso.cv <- cv.glmnet(X, y, alpha = 1, nfolds = 10)
+plot(fit.lasso.cv)
+
+# Details of the results for the lambda value that minimizes
+# the MSE
+coef(fit.lasso.cv, s = "lambda.min")
+
+# Pick best lambda
+bestlambda.lasso <- fit.lasso.cv$lambda.min
+bestlambda.lasso
+
+# Predict the first 10 observations using the optimal lambda and 
+# calculate the MSE for them.
+fit.lasso.cv.pred=predict(fit.lasso.cv, X[1:10,], s = bestlambda.lasso)  
+mean((fit.lasso.cv.pred - y[1:10])^2)
+
+
+
+# Apply the penalty term to the final model, which yields same results as above
+final_model <- glmnet(X, y, alpha = 1, lambda = bestlambda.lasso)
+
+# View coefficients
+coef(final_model)
+
+
+OLS_finalcoef <- lm(ConsumerSpending_difflag1 ~ FOMC_Meeting + 
+             log.MonetaryBase_diff + SavingsRate_diff + 
+             Population_diff2, data = lasso_df)
+summary(OLS_finalcoef)
+
+
+#  VIF
+vif_values2 <- vif(OLS_finalcoef)
+
+# Print VIF values
+print(vif_values2)
+
+
+
+###########  LaTeX ##########
+summary_table <- summary(OLS_finalcoef)
+
+# Convert to xtable object
+xtable_output <- xtable(summary_table)
+
+# Print LaTeX code
+print(xtable_output, type = "latex")
+###########  LaTeX ##########
+
+
+
+###lasso cv plot to pdf ###
+pdf("lasso_cv_plot.pdf", width=7, height=5)
+plot(fit.lasso.cv)
+dev.off()
