@@ -105,14 +105,14 @@ selection(selection = valid ~ hgc + union + college + exper + married + kids,
           data = wagedata, method = "2step")
 \end{lstlisting}
 \end{footnotesize}
-Once you have finished all of this, use \texttt{modelsummary} to create one regression table which has the estimates of the first three regression models. Include this table in your .tex writeup. 
+Once you have finished all of this, use \texttt{modelsummary} to create one regression table which has the estimates of the first three regression models. Include this table in your .tex writeup. If \texttt{modelsummary} is not able to do this easily, you may use an AI product to create the table for you.
 The true value of $\hat{\beta}_{1}=0.091$. Comment on the differences of $\hat{\beta}_{1}$ across the models. What patterns do you see? What can you conclude about the veracity of the various imputation methods?
 \question Using the same data, estimate a probit model of preferences for working in a union job. To do this, use the \texttt{glm} function. The utility model has the following form:
 \[
     u_{i} = \alpha_{0} +  \alpha_{1}hgc_{i} + \alpha_{2}college_{i} + \alpha_{3}exper_{i} + \alpha_{4}married_{i} + \alpha_{5}kids_{i} + \varepsilon_{i}
 \]
 where $u_{i}$ is the utility of working in a union job (relative to working in a non-union job).
-\question Assess the impact of a counterfactual policy in which wives and mothers are no longer allowed to work in union jobs. To do so, follow these steps: (if you don't remember how to do this, there is code in the GitHub repository in the file \texttt{example.R} in the \texttt{Structural} folder)
+\question Assess the impact of a counterfactual policy in which there is no preference or penalty to wives or mothers for working in union jobs. To do so, follow these steps: (if you don't remember how to do this, there is code in the GitHub repository in the file \texttt{example.R} in the \texttt{LectureNotes/25\_26-Discrete-Choice} folder)
 \begin{itemize}
     \item compute predicted probabilities of the model
     \item change the coefficients on \texttt{married} and \texttt{kids} to equal zero
@@ -122,6 +122,6 @@ where $u_{i}$ is the utility of working in a union job (relative to working in a
 Do you think that the model you estimated above is realistic? Why or why not?
 \question Compile your .tex file, download the PDF and .tex file, and transfer it to your cloned repository on OSCER. There are many ways to do this;  you may ask an AI chatbot or simply drag-and-drop using VS Code. Do \textbf{not} put these files in your fork on your personal laptop; otherwise git will detect a merge conflict and that will be a painful process to resolve.
 \question You should turn in the following files: .tex, .pdf, and any additional scripts (e.g. .R, .py, or .jl) required to reproduce your work.  Make sure that these files each have the correct naming convention (see top of this problem set for directions) and are located in the correct directory (i.e. \texttt{\textasciitilde/DScourseS25/ProblemSets/PS12}).
-\question Synchronize your local git repository (in your OSCER home directory) with your GitHub fork by using the commands in Problem Set 2 (i.e. \texttt{git add}, \texttt{git commit -m ''message''}, and \texttt{git push origin master}). More simply, you may also just go to your fork on GitHub and click the button that says ``Fetch upstream.'' Then make sure to pull any changes to your local copy of the fork. Once you have done this, issue a \texttt{git pull} from the location of your other local git repository (e.g. on your personal computer). Verify that the PS12 files appear in the appropriate place in your other local repository.
+\question Synchronize your local git repository (in your OSCER home directory or on your local machine) with your GitHub fork by using the commands in Problem Set 2 (i.e. \texttt{git add}, \texttt{git commit -m ''message''}, and \texttt{git push origin master}). More simply, you may also just go to your fork on GitHub and click the button that says ``Fetch upstream.'' Then make sure to pull any changes to your local copy of the fork. Once you have done this, issue a \texttt{git pull} from the location of your other local git repository (e.g. on your personal computer). Verify that the PS12 files appear in the appropriate place in your other local repository.
 \end{questions}
 \end{document}
