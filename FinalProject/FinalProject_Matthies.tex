@@ -1,0 +1,142 @@
+\documentclass[12pt,english]{article}
+\usepackage{mathptmx}
+
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{darkblue}{RGB}{0.,0.,139.}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lipsum}
+
+\usepackage[authoryear]{natbib}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage[flushleft]{threeparttable}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{pdflscape}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},backref=false,
+ colorlinks,citecolor=black,filecolor=black,
+ linkcolor=black,urlcolor=black]
+ {hyperref}
+\usepackage[all]{hypcap} % Links point to top of image, builds on hyperref
+\usepackage{breakurl}    % Allows urls to wrap, including hyperref
+
+\linespread{2}
+
+\begin{document}
+
+\begin{singlespace}
+\title{Forward Guidance and its Effects on Consumer Spending}
+\end{singlespace}
+
+\author{Adam Matthies\thanks{Department of Economics, University of Oklahoma.\
+E-mail~address:~\href{mailto:student.name@ou.edu}{adam.matthies@ou.edu}}}
+
+% \date{\today}
+\date{Spring 2025}
+
+\maketitle
+
+\begin{abstract}
+\begin{singlespace}
+This paper examines the impact of the Federal Reserve’s forward guidance on consumer spending, one of their tools to spur economic activity. Forward guidance, a monetary policy tool used to communicate future expectations, aims to influence economic behavior by shaping public perceptions of borrowing costs and economic conditions. Using a combination of macroeconomic data and consumer-level data from 2015 to 2025, I employ a L1 Regularization and OLS approach to estimate the causal effect of forward guidance on consumer spending, controlling for high-dimensional covariates such as FOMC meetings, the monetary base, personal savings rates, and population. Our findings indicate that forward guidance does have a positive correlation with consumer spending, but with no statistical significance. However, changes in other variables such as personal savings rates and population do show to have statistical significance. These results underscore the importance of effective communication in monetary policy and suggest that forward guidance can be a tool for stimulating economic activity, though its efficacy depends on household financial conditions and policy credibility. Implications for policymakers include prioritizing transparent communication to maximize economic impact.
+\end{singlespace}
+
+\end{abstract}
+\vfill{}
+
+
+\pagebreak{}
+
+
+\section{Introduction}\label{sec:intro}
+ The Federal Reserve has many tools that it can use to influence markets and often times there will be new forms of actions that they will incorporate to guide markets in their desired direction to meet their dual mandate. Some of the new forms of monetary policy actions we have recently seen are the purchase of illiquid assets in order to inject needed capital into the commercial and investment banking industries during the 2008 Financial Crisis--these policy actions will not be reviewed in this paper, but I wanted to note and give example of the Federal Reserve's dynamic "toolbox". However, in this paper, I want to highlight the power that the words spoken by the Federal Reserve has on markets--specifically consumer spending. I have chosen these FOMC meetings to be the definition of "foward guidance" later in my model because this is where most of the substance said by the Fed is to guide markets in their desired direction. As former Fed Chair Ben Bernanke once said, "When I was at the Federal Reserve, I occasionally observed that monetary policy is 98 percent talk and only 2 percent action. The ability to shape market expectations of future policy through public statements is one of the most powerful tools the Fed has. The downside for policymakers, of course, is that the cost of sending the wrong message can be high. Presumably, that’s why my predecessor Alan Greenspan once told a Senate committee that, as a central banker, he had “learned to mumble with great incoherence.”\citet{Bernanke2015}. It can be observed for those who follow equity markets, that any day that the Federal Reserve issues statements in a FOMC meeting, that it will usually cause a larger than usual variation in stock prices for that day. I do not have hard empirical evidence for the previous statement, but it is just a conclusion I have drawn from following equity markets. But, in this paper I want to quantify and search for any statistical significant impacts that the words of the Federal Reserve has on consumer actions--rather than its impact on equity markets or in lending markets, where much previous research has been done and that will be elaborated on in the Literature Review. I will look to see how forward guidance affects household consumption and see how affective forward guidance is as a policy instrument. This paper will investigate the causal relationship between the Federal Reserve’s forward guidance on consumer spending, focusing on how communication about future monetary policy impacts consumers decisions to spend or save.
+
+\section{Literature Review}\label{sec:litreview}
+Something that stoked my interest on this topic was a book from Ben Bernanke called "The Courage to Act", where in Chapter 4 he talks about how he wanted to prioritize forward guidance and be more informative to the general public on targeted measures for the economy. \citet{Bernanke2015} emphasizes the importance of guiding market expectations through clear communication about the Fed’s interest rate targets. He contrasts his preference for transparency with Chairman Alan Greenspan’s cryptic style, which often left markets guessing. Bernanke pushed for more explicit statements about the FOMC’s rate decisions and economic outlook to reduce uncertainty. He believed that clear guidance on the federal funds rate path helped markets align their expectations with the Fed’s goals, enhancing policy effectiveness. Bernanke later notes that Fed research showed his public statements about targeting lower short-term interest rates helped reduce long-term rates, such as mortgage rates and Treasury yields. In a research paper titled "The Power of Forward Guidance Revisited", the authors had come to the conclusion that in scenarios where individuals face income risks and borrowing constraints, a precautionary savings motive reduces their responsiveness to anticipated future interest rate changes, significantly diminishing the ability of forward guidance to stimulate economic activity from \cite{mckay2016power}. In another research paper titled "Foward Guidance", \cite{HAGEDORN20191} finds that forward guidance has negligible effects. Committing to low nominal interest rates for several quarters, despite contrary macroeconomic indicators, yields minimal impacts on current output and employment. The study however elucidates why forward guidance is highly effective in complete markets models, but diminishes in incomplete market frameworks \cite{HAGEDORN20191}. The concepts of complete and incomplete markets is very important to note in the above papers and I will not be doing a separate analysis in my research paper between the two. In more complete markets, where there is less asymmetric information and agents more able to hedge against risks from external forces, it can be seen that forward guidance has a notable effect. In a paper, "The Limits of Forward Guidance" (Journal of Monetary Economics, 2019), \cite{CAMPBELL2019118} challenge conventional assumptions about central bank communication effectiveness. They develop and estimate a model revealing that the Federal Reserve has limited ability to influence market expectations about future interest rates, particularly at longer horizons where the "forward guidance puzzle" emerges in standard models. The researchers demonstrate that these communication limitations significantly impact how forward guidance affects the broader economy. Their analytical framework shows that imperfect communication both accelerates the economic effects of anticipated rate changes and contributes meaningfully to macroeconomic volatility. This research provides important empirical evidence quantifying the practical constraints of forward guidance as a monetary policy tool, highlighting the gap between theoretical assumptions of perfect central bank communication and real-world limitations. While existing literature on forward guidance has predominantly focused on its effects on financial markets, inflation expectations, and broad macroeconomic aggregates (Campbell et al., 2019; among others), there remains a significant gap in our understanding of how these central bank communications directly influence consumer spending behavior. Prior research has extensively documented how forward guidance shapes yield curves and market expectations, but comparatively little attention has been paid to the transmission through which these policy signals affect household consumption decisions. This study aims to address this gap by specifically examining how forward guidance announcements translate into changes in consumer spending patterns. By leveraging granular consumer spending data, this research will provide insights into whether and how central bank communication influences the timing and magnitude of consumer expenditures.
+
+
+
+\section{Data}\label{sec:data}
+The data is time series where each variable was taken monthly for the previous 10 years and the data was all collected from FRED using an API key. The data begins with 120 observations of 8 variables. I used consumer spending from VISA as my dependent variable. The consumer spending variable is an index that measures 100 as the baseline and any number above or below 100 is considered a percentage change from the mean. For example, 101 would be a 1 percent increase in consumer spending from all purchases made on VISA cards. I felt comfortable using an index coming from VISA because they have the largest market share in the payment processing industry, so I considered that a strong enough sample. I also wanted to incorporate the purchase of used goods--as most macroeconomic variables do not include the purchase of used goods in their statistics. For my independent variables: I included the monetary base, one-year expected inflation, the labor force participation rate, personal savings rates, and a dummy variable for if there was a FOMC meeting that month or not. The monetary base was included because the Federal Reserve has the power to change the money in circulation through the use of open market operations such as purchasing or selling treasury bonds. This variable allows us to look at the more easily identifiable Fed tool of changing interest rates to effect consumer spending. The monetary base is in the units of billions of dollars and was log transformed. I included the one-year expected inflation rate as this is something that the Fed as well uses to try and guide markets in the direction to reach their dual mandate. The one-year expected inflation in the data is in percent form. The labor force participation rate was included as another variable to see its impacts on consumer spending. This variable can also be guided by the Fed and is in percent form. Population was included to test for its impacts on consumer spending and its units are in the thousands. The final variable included in the original model was a dummy variable for FOMC meetings where it equals 1 if there was a meeting that month and 0 if there was not a meeting that month. The FOMC meeting dummy variable is the main variable to be to testing in the model and the other variables were included in order to try and account for more of the variance in consumer spending. 
+
+
+\section{Empirical Methods}\label{sec:methods}
+I started off with running a VIF test on all of the variables to make sure that no multicollinearity was present in the dataset. A VIF test on a multiple variable linear regression with all of the starting variables showed that there was no multicollinearity strong enough to omit any of the variables. After this, I ran an ADF test across all variables in order to test for unit roots in the dataset. After the ADF test, it was shown that adjustments to all variables needed to be made, except for the FOMC meeting dummy. My dependent variable for consumer spending was lagged by 1 in order to see the effects at a period of 1 month later because the effect of all the dependent variables will not be immediate. In order to get rid of the present unit roots in the time series data, first differences were taken for the consumer spending, log of monetary base, personal savings rate, one-year expected inflation rate, labor force participation rate, and personal savings rate. After first differencing population, a unit root was still present, so I took second differences and all of the variables became stationary. After all of the transformations, there became 118 observations of each variable. From this point, I underwent L1 regularization in order to find the optimal collection of variables. In order to select the optimal penalty parameter, I used cross-validation across 10 folds. From the Lasso, the optimal penalty parameter that minimized MSE was determined to be 0.24 and the variables that were not shrunk to 0 were: FOMC meeting, log of monetary base, personal savings rate, and population. However, I am only using the Lasso for variable selection, so I then ran a post-Lasso OLS. I included all of the aforementioned variables from the Lasso in the OLS. Below, in (1), you can see my multiple linear regression that I have used for my model. Attached below is also the formula for the Lasso that I used for my variable selections. 
+
+\begin{equation}
+\label{eq:1}
+\begin{aligned}
+\Delta \hat{ConsumerSpending}_{t-1} = &\ \hat{\beta}_0 + \hat{\beta}_1 \text{FOMC Meeting} + \hat{\beta}_2 \Delta\text{logMonetaryBase} + \\
+&\ \hat{\beta}_3 \Delta\text{PersonalSavingsRate} + \\&\hat{\beta}_4\Delta\text{Population}  + \epsilon
+\end{aligned}
+\end{equation}
+
+
+
+\hat{\beta}^{\text{Lasso}} = \underset{\beta}{\text{argmin}} \left\{ \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right\}
+
+
+\section{Research Findings}\label{sec:results}
+My research findings can be summarized in Figures and Tables in the below section of the paper. Attached there will be my table of summary statistics for the OLS I ran with the formula found in (1) in Empirical Methods. For the Lasso, the mean squared error I was able to obtain while fitting the Lasso was 2.82 and the graph (Figure 1) will be attached below in the Figures and Tables sections. Given that my dependent variable, consumer spending, is an index with a baseline of 100, this would yield a RMSE of 1.67. A RMSE of 1.67 would seem to suggest that a prediction could be within 1.67 percent of error in either direction. For Figure 1, every point on the red curve represents a specific lambda value, with its height showing the mean squared error calculated from cross-validation for that lambda. The first vertical line indicates the lambda with the lowest MSE. The second vertical line highlights a larger lambda where the MSE is within one standard error of the minimum MSE. The shaded area around the red curve depicts the standard error of the MSE, reflecting cross-validation variability. In my final OLS regression, after using L1 regularization to find the optimal set of variables, it can be deemed that the only statistically significant variables on consumer spending are the personal savings rate and population. A FOMC meeting being held and the monetary base were deemed to be statistically insignificant. Given that consumer spending is on an index, we can interpret these coefficients as a percent change in consumer spending. On average, consumer spending rises by 0.99 percent in months following an FOMC meeting, but we reject the null hypothesis for this variable, indicating the effect is not statistically significant. For the log of the monetary base--on average, a 13 percent decrease in consumer spending can be found for every 1 percent increase in the monetary base, however this variable does not show statistical significance either. On average, consumer spending decreases 0.77 percent for every 1 percent increase in personal savings rate and we can fail to reject the null hypothesis for this variable. There is strong statistical signficance with this variable, as the p-value falls well below .01. This variable theoretically makes sense because there is a trade-off for the marginal propensity to save and consume. This variable may not have much to do with forward guidance, but I felt it should be added to explain some variances in consumer spending. And, on average, consumer spending increases by .04 percent for every 1 percent increase in population. We again fail to reject the null hypothesis for this variable as the p-value as well falls well below .01. The main target variable for if a FOMC meeting was held or not is shown to have an affect on consumer spending in the following month, however similar to the findings of \cite{HAGEDORN20191} and \cite{mckay2016power}, it is hard to draw statistical significance from those meetings. These results suggest that while forward guidance, as captured by FOMC meetings, may influence consumer spending, its impact is not statistically robust in this analysis, potentially due to the limited historical data on forward guidance since its systematic use began in 2003. The strong significance of personal savings rate and population underscores their critical roles in driving consumer spending, offering valuable insights for policymakers. However, the limited scope of the dataset may constrain the ability to fully capture the nuanced effects of monetary policy tools like forward guidance, warranting further research with expanded data.
+
+
+\section{Conclusion}\label{sec:conclusion}
+While there can be many conclusions to draw as to why FOMC meetings do not significantly drive consumer spending in the following month--I think I will say that most consumers are not directly paying attention to the exact words of the Fed. Most of what the typical consumer will hear in relation to the economy will be translated through some news outlet which will then finds its way to the consumer. I think a very important factor that limited the statistical significance in the model studied in this paper, is the substance of each FOMC meeting. Each FOMC meeting, especially over certain time periods, will have different tones and directions in which markets may need to move. In the research I have done, I am assuming that the economy only needs to move in one certain direction. For example, during COVID, markets needed to be heavily pushed into an expansionary policy to increase consumer spending, increase investment, increase government spending, etc. And shortly after, markets had become a train off the rails where many economic variables needed to be halted as inflation was skyrocketing. Those are two examples from time periods in the data where markets needed to move in opposing directions. While I can't say if the transcripts of these FOMC meetings were available, that I would be able to find causation between FOMC meetings and consumer spending, I do however think that it would create a more discernible answer to my research question. This mediated transmission likely weakens the direct link between FOMC meetings and consumer behavior. Another limiting factor on my research was a relatively small sample size as I only had 118 observations across my variables. Forward guidance has only been implemented since roughly 2003, so future research could benefit from an expanded time horizon as more data becomes available, allowing for a more comprehensive assessment of forward guidance's impact on consumer spending.
+
+\vfill
+\pagebreak{}
+\begin{spacing}{1.0}
+\bibliographystyle{jpe}
+\bibliography{PS11_Matthies.bib}
+\addcontentsline{toc}{section}{References}
+\end{spacing}
+
+\vfill
+\pagebreak{}
+\clearpage
+
+%========================================
+% FIGURES AND TABLES 
+%========================================
+\section*{Figures and Tables}\label{sec:figTables}
+\addcontentsline{toc}{section}{Figures and Tables}
+
+
+%----------------------------------------
+% Table 1
+%----------------------------------------
+
+\caption{Summary Statistics of Variables on Consumer Spending}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & -0.6667 & 0.6971 & -0.96 & 0.3409 \\ 
+  FOMC\_Meeting & 0.9992 & 0.8438 & 1.18 & 0.2388 \\ 
+  log.MonetaryBase\_diff & -13.9138 & 14.0880 & -0.99 & 0.3254 \\ 
+  SavingsRate\_diff & -0.7722 & 0.1486 & -5.20 & 0.0000 \\ 
+  Population\_diff2 & 0.0484 & 0.0168 & 2.89 & 0.0047 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Lasso_cv_plot.pdf}
+    \caption{Lasso cross-validation plot showing MSE vs. log($\lambda$).}
+    \label{fig:Lasso-cv}
+\end{figure}
+
+
+\end{document}
